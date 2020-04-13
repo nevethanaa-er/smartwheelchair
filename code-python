@@ -1,0 +1,82 @@
+RELAY CONDITIONS
+//NO:OPEN->INACTIVE
+//NC:CLOSED->INACTIVE
+
+
+
+import speech_recognition as sr
+r=sr.Recognizer()
+with sr.Microphone() as source:
+    r.adjust_for_ambient_noise(source)
+    print("say something")
+    audio=r.listen(source)
+try:
+    text=r.recognize_google(audio)
+    print("text   "+r.recognize_google(audio))
+    motorcontrol(text)
+except sr.UnknownValueError:
+    print("error")
+except sr.RequestError as e:
+    print("cannot obtain results;{0}",format(e))
+
+
+def motorcontrol(text):
+import RPi.GPIO as gpio
+import time
+
+gpio.setmode(gpio.BOARD)
+in1=8
+in2=10
+brake=23
+speed=32
+win1=11
+win2=13
+
+gpio.setup(8, gpio.OUT)
+gpio.setup(10, gpio.OUT)
+gpio.setup(23,gpio.OUT)
+gpio.setup(32,gpio.OUT)
+gpio.setup(11, gpio.OUT)
+gpio.setup(13, gpio.OUT)
+
+control=GPIO.PWM(speed,1000)
+control.start(50)            #1.6v of 3.3v ie 50% of 3.3v
+
+if(l==True and r==true)
+  if(text=="brake")            #break
+   gpio.output(brake,True)
+   gpio.output(in1,False)
+   gpio.output(in2.False) 
+   gpio.output(win1,False)
+   gpio.output(win2,False)    
+
+  if(text=="forward")
+   gpio.output(in1, True)
+   gpio.output(in2, False)
+   gpio.output(win1,False)
+   gpio.output(win2,False)
+   sleep(45)
+
+  if(text=="reverse")
+   gpio.output(in1, False)
+   gpio.output(in2, True)
+   gpio.output(win1,False)
+   gpio.output(win2,False)
+   sleep(45)
+ 
+  if (text=="left")
+   gpio.output(in1, True)
+   gpio.output(in2, False)
+   gpio.output(win1,True)
+   gpio.output(win2,False)
+   sleep(45)
+
+  if(text="right")
+   gpio.output(in1, True)
+   gpio.output(in2, False)
+   gpio.output(win1,False)
+   gpio.output(win2,True)
+   time.sleep(45)
+ 
+gpio.cleanup()
+
